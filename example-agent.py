@@ -26,6 +26,7 @@ snmpset -v 2c -c public localhost NET-SNMP-EXAMPLES-MIB::netSnmpExampleString.0 
 import time
 import random
 import pyagentx
+import socket
 
 def str_to_oid(data):
     length = len(data)
@@ -78,6 +79,9 @@ class MyAgent(pyagentx.Agent):
 
 
 def main():
+
+    pyagentx.SOCKET_FAMILY = socket.AF_INET
+    pyagentx.SOCKET_PATH = ('localhost', 705)
     pyagentx.setup_logging()
     try:
         a = MyAgent()

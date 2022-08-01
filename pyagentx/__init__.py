@@ -7,6 +7,7 @@ from __future__ import (
 )
 
 import logging
+import socket
 
 from pyagentx.updater import Updater
 from pyagentx.agent import Agent
@@ -26,6 +27,7 @@ def setup_logging(debug=False):
     logger.addHandler(ch)
 
 SOCKET_PATH = "/var/agentx/master"
+SOCKET_FAMILY = socket.AF_UNIX
 
 AGENTX_EMPTY_PDU            = 1
 AGENTX_OPEN_PDU             = 1
