@@ -138,11 +138,16 @@ class Network(threading.Thread):
                 for i in range(len(tlist)):
                     try:
                         sok = int(slist[i]) <= int(tlist[i])
-                        eok = int(elist[i]) >= int(tlist[i])
-                        if not ( sok and eok ):
-                            break
                     except IndexError:
+                        #sok = True, on most recent successful comparison
                         pass
+                    try:
+                        eok = int(elist[i]) >= int(tlist[i])
+                    except IndexError:
+                        #eok = True, on most recent successful comparison
+                        pass
+                    if not ( sok and eok ):
+                        break
                 if sok and eok:
                     return tmp_oid
             return None # No match!
@@ -243,7 +248,11 @@ class Network(threading.Thread):
 
             elif request.type == pyagentx.AGENTX_COMMITSET_PDU:
                 for handler in self._sethandlers.values():
-                    handler.network_commit(request.session_id, request.transaction_id)
+                    try:
+                        handler.network_commit(request.session_id, request.transaction_id)
+                    except:
+                        response.error = pyagentx.ERROR_COMMITFAILED
+                        response.error_index = 1
                 logger.info("Received COMMITSET PDU")
 
             elif request.type == pyagentx.AGENTX_UNDOSET_PDU:
