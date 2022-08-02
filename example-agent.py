@@ -27,6 +27,7 @@ import time
 import random
 import pyagentx
 import socket
+import traceback
 
 def str_to_oid(data):
     length = len(data)
@@ -88,6 +89,7 @@ def main():
         a.start()
     except Exception as e:
         print ("Unhandled exception:", e)
+        traceback.print_exc()
         a.stop()
     except KeyboardInterrupt:
         a.stop()
